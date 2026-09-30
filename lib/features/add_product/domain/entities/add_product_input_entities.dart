@@ -6,7 +6,7 @@ class AddProductInputEntities {
   final String code;
   final File image;
   final num price;
-  final String? imageUrl;
+  String? imageUrl;
   final String categoryId;
 
   AddProductInputEntities({
