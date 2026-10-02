@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fruits_hub_dashboard/core/services/fire_base/storage_services.dart';
+import 'package:fruits_hub_dashboard/core/services/network/storage_services.dart';
 import 'package:path/path.dart' as b;
 
 class FireStorageImpl implements StorageServices {

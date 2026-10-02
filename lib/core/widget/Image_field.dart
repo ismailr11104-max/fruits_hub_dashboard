@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ImageField extends StatefulWidget {
-  ImageField({super.key, required this.onChanged});
+  const ImageField({super.key, required this.onChanged});
 
   final ValueChanged<File?> onChanged;
 
@@ -20,22 +20,9 @@ class _ImageFieldState extends State<ImageField> {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
+      enabled: isLoading,
       child: GestureDetector(
-        onTap: () async {
-          setState(() {
-            isLoading = true;
-          });
-          try {
-            pikeImage();
-          } catch (e) {
-            setState(() {
-              isLoading = false;
-            });
-          }
-          setState(() {
-            isLoading = false;
-          });
-        },
+        onTap: isLoading ? null : pikeImage,
         child: Stack(
           children: [
             Container(
@@ -46,23 +33,27 @@ class _ImageFieldState extends State<ImageField> {
               ),
               child: fileImage != null
                   ? ClipRRect(
-                      borderRadius: BorderRadiusGeometry.circular(16),
-                      child: Image.file(fileImage!),
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.file(fileImage!, fit: BoxFit.cover),
                     )
-                  : Icon(Icons.image_outlined, size: 120),
+                  : const Icon(Icons.image_outlined, size: 120),
             ),
-            Visibility(
-              visible: fileImage == null,
-              child: IconButton(
+
+            if (fileImage != null)
+              IconButton(
                 onPressed: () {
                   setState(() {
                     fileImage = null;
-                    widget.onChanged(null);
                   });
+
+                  widget.onChanged(null);
                 },
-                icon: Icon(Icons.close_sharp, color: Colors.red, size: 24),
+                icon: const Icon(
+                  Icons.close_sharp,
+                  color: Colors.red,
+                  size: 24,
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -70,9 +61,31 @@ class _ImageFieldState extends State<ImageField> {
   }
 
   Future<void> pikeImage() async {
-    final picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    fileImage = File(image!.path);
-    widget.onChanged(fileImage!);
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final ImagePicker picker = ImagePicker();
+
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      // المستخدم ألغى اختيار الصورة
+      if (image == null) {
+        return;
+      }
+      final File selectedFile = File(image.path);
+      if (!mounted) return;
+      setState(() {
+        fileImage = selectedFile;
+      });
+
+      widget.onChanged(selectedFile);
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 }

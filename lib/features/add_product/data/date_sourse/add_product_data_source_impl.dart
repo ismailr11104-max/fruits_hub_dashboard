@@ -1,4 +1,4 @@
-import 'package:fruits_hub_dashboard/core/services/fire_base/fire_store_service.dart';
+import 'package:fruits_hub_dashboard/core/services/network/fire_store_service.dart';
 import 'package:fruits_hub_dashboard/core/utils/backend_endpoint.dart';
 import 'package:fruits_hub_dashboard/features/add_product/data/Model/add_product_model.dart';
 import 'package:fruits_hub_dashboard/features/add_product/data/date_sourse/add_product_data_source.dart';

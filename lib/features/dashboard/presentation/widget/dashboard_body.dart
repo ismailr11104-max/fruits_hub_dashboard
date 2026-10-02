@@ -8,13 +8,30 @@ class DashboardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomButton(
-      onPressed: () {
-        Navigator.of(context).pushNamed(AddProductView.addView);
-      },
-      child: Text(
-        'Add Product',
-        style: TextStyles.bold19.copyWith(color: Color(0xffffffff)),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        children: [
+          CustomButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(AddProductView.addView);
+            },
+            child: Text(
+              'Add Product',
+              style: TextStyles.bold19.copyWith(color: Color(0xffffffff)),
+            ),
+          ),
+          SizedBox(height: 16),
+          CustomButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(AddProductView.addView);
+            },
+            child: Text(
+              'Add Categories',
+              style: TextStyles.bold19.copyWith(color: Color(0xffffffff)),
+            ),
+          ),
+        ],
       ),
     );
   }
